@@ -1,0 +1,69 @@
+{% load static %}
+
+{% load humanize %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Index - Impact Bootstrap Template</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="{% static "assets/img/favicon.png" %}" rel="icon">
+  <link href="{% static "assets/img/apple-touch-icon.png" %}" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static "assets/vendor/bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
+  <link href="{% static "assets/vendor/bootstrap-icons/bootstrap-icons.css" %}" rel="stylesheet">
+</head>
+
+<body style="background-color: #121212;color: #fff;">
+    <a href="/admin/food/week/" class="btn btn-info btn-sm" style="display: inline-block;margin: 10px;">back page</a>
+    <div class="container">
+        <span style="border: 1px black solid;border-radius: 5px;padding: 5px;color: #fff;background-color: #264B5D;display: inline-block;margin-top: 5px;">{{ week.0.type}}</span>
+        <button onclick="window.location.href = '/update/week/food/{{ week.0.id }}/access';" class="btn btn-warning" style="float: right; display: inline-block;margin-top: 15px;" {% if access %} disabled {% endif %}>Approval of raw materials</button>
+        <button onclick="window.location.href = '/admin/food/buylist/';" class="btn btn-info" style="float: right; display: inline-block;margin-top: 15px;margin-right: 10px;" {% if not access %} disabled {% endif %}>Create Buy List</button>
+
+        <div style="width: 200px;margin: auto;text-align: center;" class="mt-4">
+            <h1>{{ food.0.name }}</h1>
+        </div>
+        <div class="row">
+        {% for x in reqq %}
+            {% for y in material %}
+                {% for z in y %}
+                    {% for c in status %}
+                        {% if x.material.id == z.id and c.0 == x.material.id %}
+                            <div class="col-3 mt-4">
+                                <div class="card {% if c.1 >= 0 %} bg-success {% else %} bg-danger {% endif %} text-white">
+                                    <div class="card-body">
+                                        <h5 class="card-title" style="text-align: end;width: 100%;">{{ z.name }}</h5>
+                                        <p>Required : {{ x.count }} {{ z.typework }} </p>
+                                        <p>Raw materials available : {{ z.count }} {{ z.typework }}</p>
+                                        <p>the required amount : {{ c.1 }}</p>
+                                        <a href="/admin/food/material/{{ z.id }}/change/" class="btn btn-primary m-2">resource management</a>
+                                        <a href="{{ z.url }}" class="btn btn-info m-2 btn-sm" target="_blank">Show Docs</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor%}
+                {% endfor%}
+            {% endfor%}
+        {% endfor%}
+        </div>
+
+    </div>
+    <script src="{% static "assets/vendor/bootstrap/js/bootstrap.bundle.min.js" %}"></script>
+
+</body>
+
+</html>
